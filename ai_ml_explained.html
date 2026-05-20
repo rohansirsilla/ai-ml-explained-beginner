@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & ML — A Friendly Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a1f;
+    color: #fff;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  
+  /* Animated gradient background */
+  .bg-gradient {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(125deg, #0a0a1f, #1a0a2e, #16213e, #0f3460);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    z-index: -2;
+  }
+  
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  /* Floating particles */
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+  
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ff6b9d;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 20s infinite linear;
+    box-shadow: 0 0 10px #ff6b9d;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) translateX(100px); opacity: 0; }
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  
+  /* Hero section */
+  .hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    animation: fadeInUp 1s ease;
+  }
+  
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff6b9d, #c44569, #ffc1d3, #ff6b9d);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease infinite;
+    margin-bottom: 20px;
+  }
+  
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  .hero .subtitle {
+    font-size: 1.2rem;
+    color: #c8c8e0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Section cards */
+  .section {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 40px;
+    margin: 30px 0;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+  }
+  
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #ff6b9d, #ffc1d3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .section p {
+    color: #d0d0e8;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+  }
+  
+  /* The Big Picture - AI vs ML vs DL diagram */
+  .nested-circles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 380px;
+    position: relative;
+    margin: 30px 0;
+  }
+  
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 20px;
+    font-weight: bold;
+    transition: transform 0.5s ease;
+    cursor: pointer;
+  }
+  
+  .circle:hover { transform: scale(1.05); }
+  
+  .circle-ai {
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(255, 107, 157, 0.3), rgba(255, 107, 157, 0.1));
+    border: 2px solid #ff6b9d;
+    animation: pulse 3s ease infinite;
+    color: #ff6b9d;
+    font-size: 1.3rem;
+  }
+  
+  .circle-ml {
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(196, 69, 105, 0.4), rgba(196, 69, 105, 0.1));
+    border: 2px solid #c44569;
+    animation: pulse 3s ease infinite 0.5s;
+    color: #ffb3c8;
+    font-size: 1.1rem;
+  }
+  
+  .circle-dl {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(255, 193, 211, 0.5), rgba(255, 193, 211, 0.2));
+    border: 2px solid #ffc1d3;
+    animation: pulse 3s ease infinite 1s;
+    color: #fff;
+    font-size: 0.95rem;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 157, 0.4); }
+    50% { box-shadow: 0 0 50px rgba(255, 107, 157, 0.8); }
+  }
+  
+  /* Interactive demo: Cat or Dog */
+  .demo-box {
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(196, 69, 105, 0.1));
+    border-radius: 16px;
+    padding: 30px;
+    margin: 25px 0;
+    text-align: center;
+  }
+  
+  .demo-input {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  
+  .feature-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #ff6b9d;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .feature-btn:hover {
+    background: #ff6b9d;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 107, 157, 0.4);
+  }
+  
+  .feature-btn.active {
+    background: #ff6b9d;
+    box-shadow: 0 0 20px rgba(255, 107, 157, 0.6);
+  }
+  
+  .prediction {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 20px;
+    min-height: 50px;
+    background: linear-gradient(135deg, #ffc1d3, #ff6b9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: all 0.5s ease;
+  }
+  
+  /* Learning animation */
+  .neural-network {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 250px;
+    margin: 30px 0;
+    position: relative;
+  }
+  
+  .layer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 2;
+  }
+  
+  .neuron {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff6b9d, #c44569);
+    box-shadow: 0 0 15px #ff6b9d;
+    animation: neuronPulse 2s ease infinite;
+  }
+  
+  .neuron:nth-child(2) { animation-delay: 0.3s; }
+  .neuron:nth-child(3) { animation-delay: 0.6s; }
+  .neuron:nth-child(4) { animation-delay: 0.9s; }
+  
+  @keyframes neuronPulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+  
+  .network-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .connection {
+    stroke: rgba(255, 107, 157, 0.3);
+    stroke-width: 1;
+    animation: dataFlow 3s ease infinite;
+  }
+  
+  @keyframes dataFlow {
+    0%, 100% { stroke: rgba(255, 107, 157, 0.2); }
+    50% { stroke: rgba(255, 107, 157, 0.8); }
+  }
+  
+  /* Real world examples grid */
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+  }
+  
+  .example-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 107, 157, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .example-card:hover {
+    transform: translateY(-8px);
+    border-color: #ff6b9d;
+    box-shadow: 0 15px 30px rgba(255, 107, 157, 0.3);
+  }
+  
+  .example-emoji {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    display: block;
+    animation: bounce 2s ease infinite;
+  }
+  
+  .example-card:nth-child(2) .example-emoji { animation-delay: 0.2s; }
+  .example-card:nth-child(3) .example-emoji { animation-delay: 0.4s; }
+  .example-card:nth-child(4) .example-emoji { animation-delay: 0.6s; }
+  .example-card:nth-child(5) .example-emoji { animation-delay: 0.8s; }
+  .example-card:nth-child(6) .example-emoji { animation-delay: 1s; }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .example-card h3 {
+    color: #ff6b9d;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+  }
+  
+  .example-card p {
+    font-size: 0.9rem;
+    color: #c0c0d8;
+  }
+  
+  /* Career paths */
+  .career-timeline {
+    position: relative;
+    padding-left: 30px;
+    margin-top: 25px;
+  }
+  
+  .career-timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #ff6b9d, #c44569);
+  }
+  
+  .timeline-item {
+    position: relative;
+    padding: 20px 0 20px 30px;
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideIn 0.8s ease forwards;
+  }
+  
+  .timeline-item:nth-child(1) { animation-delay: 0.2s; }
+  .timeline-item:nth-child(2) { animation-delay: 0.4s; }
+  .timeline-item:nth-child(3) { animation-delay: 0.6s; }
+  .timeline-item:nth-child(4) { animation-delay: 0.8s; }
+  
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 25px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ff6b9d;
+    box-shadow: 0 0 15px #ff6b9d;
+  }
+  
+  .timeline-item h3 {
+    color: #ffc1d3;
+    margin-bottom: 5px;
+  }
+  
+  /* Branch comparison */
+  .branch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+  }
+  
+  .branch-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+    border-top: 4px solid #ff6b9d;
+    transition: transform 0.3s ease;
+  }
+  
+  .branch-card:hover { transform: translateY(-5px); }
+  
+  .branch-card.recommended {
+    border-top-color: #ffc1d3;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(255, 193, 211, 0.05));
+    position: relative;
+  }
+  
+  .badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: linear-gradient(135deg, #ff6b9d, #c44569);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .branch-card h3 {
+    color: #ffc1d3;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .branch-card ul {
+    list-style: none;
+    margin-top: 12px;
+  }
+  
+  .branch-card li {
+    padding: 6px 0;
+    color: #d0d0e8;
+    font-size: 0.95rem;
+    padding-left: 20px;
+    position: relative;
+  }
+  
+  .branch-card li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: #ff6b9d;
+  }
+  
+  /* CTA section */
+  .cta {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(196, 69, 105, 0.1));
+    border-radius: 24px;
+    margin: 40px 0;
+  }
+  
+  .cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, #fff, #ffc1d3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Highlight text */
+  .highlight {
+    color: #ffc1d3;
+    font-weight: 600;
+  }
+  
+  .term {
+    background: rgba(255, 107, 157, 0.2);
+    padding: 2px 8px;
+    border-radius: 6px;
+    color: #ffc1d3;
+    font-weight: 600;
+  }
+  
+  /* Code-like box for analogies */
+  .analogy-box {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 4px solid #ff6b9d;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-style: italic;
+    color: #ffc1d3;
+  }
+  
+  .analogy-box::before {
+    content: '💡 ';
+    font-style: normal;
+  }
+  
+  @media (max-width: 600px) {
+    .section { padding: 25px 20px; }
+    .nested-circles { height: 320px; }
+    .circle-ai { width: 280px; height: 280px; font-size: 1.1rem; }
+    .circle-ml { width: 200px; height: 200px; font-size: 1rem; }
+    .circle-dl { width: 120px; height: 120px; font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-gradient"></div>
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <div class="hero">
+    <h1>AI & ML, Explained ✨</h1>
+    <p class="subtitle">A friendly guide to help you figure out if this is the path for you. No jargon. Just real talk.</p>
+  </div>
+
+  <!-- Section 1: What is AI? -->
+  <div class="section">
+    <h2>🤔 First, what even is AI?</h2>
+    <p>You use AI every single day, probably without thinking about it. <span class="highlight">Instagram knows which reels you'll love. Spotify guesses your next favorite song. ChatGPT writes your essays.</span> That's all AI.</p>
+    <p>At its core, <span class="term">Artificial Intelligence (AI)</span> is just teaching computers to do things that normally require human thinking — like recognizing faces, understanding language, or making decisions.</p>
+    
+    <div class="analogy-box">
+      Think of AI like teaching a really smart parrot. Except this parrot can read millions of books in seconds and remember everything.
+    </div>
+  </div>
+
+  <!-- Section 2: AI vs ML vs DL -->
+  <div class="section">
+    <h2>🎯 AI vs ML vs Deep Learning</h2>
+    <p>People throw these terms around like they mean the same thing. They don't. Here's the trick: they're nested inside each other, like Russian dolls.</p>
+    
+    <div class="nested-circles">
+      <div class="circle circle-ai">Artificial Intelligence</div>
+      <div class="circle circle-ml">Machine Learning</div>
+      <div class="circle circle-dl">Deep Learning</div>
+    </div>
+    
+    <p><span class="term">AI</span> is the big dream — make machines smart.</p>
+    <p><span class="term">Machine Learning (ML)</span> is one way to do it — instead of programming every rule, you let the computer <span class="highlight">learn from examples</span>.</p>
+    <p><span class="term">Deep Learning</span> is a fancier kind of ML that uses brain-inspired networks. It's what powers ChatGPT, self-driving cars, and image generators.</p>
+  </div>
+
+  <!-- Section 3: How does it actually learn? -->
+  <div class="section">
+    <h2>🧠 But how does it actually "learn"?</h2>
+    <p>Imagine you've never seen a cat. I show you 1,000 cat photos. By photo #500, you start noticing patterns — <span class="highlight">pointy ears, whiskers, judgmental eyes</span>. By photo #1000, you can spot a cat anywhere.</p>
+    <p>That's exactly what ML does. We feed it tons of data, and it figures out the patterns on its own.</p>
+    
+    <div class="neural-network">
+      <svg class="network-svg" id="networkSvg"></svg>
+      <div class="layer">
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+      </div>
+      <div class="layer">
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+      </div>
+      <div class="layer">
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+      </div>
+      <div class="layer">
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+      </div>
+    </div>
+    
+    <p style="text-align: center; font-size: 0.9rem; color: #a0a0c0; margin-top: 10px;">↑ A neural network. Each dot is a tiny "decision maker" passing info to the next layer.</p>
+
+    <!-- Interactive demo -->
+    <div class="demo-box">
+      <h3 style="color: #ffc1d3; margin-bottom: 10px;">🎮 Try it: Train a tiny AI!</h3>
+      <p style="font-size: 0.95rem;">Pick features. The AI guesses: cat or dog?</p>
+      <div class="demo-input">
+        <button class="feature-btn" data-feature="meow">Meows 🐱</button>
+        <button class="feature-btn" data-feature="bark">Barks 🐕</button>
+        <button class="feature-btn" data-feature="purr">Purrs 😺</button>
+        <button class="feature-btn" data-feature="fetch">Plays Fetch 🎾</button>
+      </div>
+      <div class="prediction" id="prediction">Pick some traits above! 👆</div>
+    </div>
+  </div>
+
+  <!-- Section 4: Real world -->
+  <div class="section">
+    <h2>🌍 Where AI is already running the world</h2>
+    <p>This isn't sci-fi. It's already in your pocket, on your screen, in your hospital.</p>
+    
+    <div class="examples-grid">
+      <div class="example-card">
+        <span class="example-emoji">📱</span>
+        <h3>Social Media</h3>
+        <p>Your FYP on Instagram & TikTok is 100% AI deciding what hooks you.</p>
+      </div>
+      <div class="example-card">
+        <span class="example-emoji">🏥</span>
+        <h3>Healthcare</h3>
+        <p>AI spots cancer in scans earlier than human doctors sometimes.</p>
+      </div>
+      <div class="example-card">
+        <span class="example-emoji">🚗</span>
+        <h3>Self-Driving Cars</h3>
+        <p>Tesla, Waymo — cars literally seeing the road with AI eyes.</p>
+      </div>
+      <div class="example-card">
+        <span class="example-emoji">🎨</span>
+        <h3>Art & Music</h3>
+        <p>Midjourney, DALL-E, Suno — AI making art that wins competitions.</p>
+      </div>
+      <div class="example-card">
+        <span class="example-emoji">💬</span>
+        <h3>Chatbots</h3>
+        <p>ChatGPT, Claude, Gemini — your AI study buddies & therapists.</p>
+      </div>
+      <div class="example-card">
+        <span class="example-emoji">🛡️</span>
+        <h3>Fraud Detection</h3>
+        <p>Your bank uses AI to flag weird transactions in milliseconds.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Which branch? -->
+  <div class="section">
+    <h2>🎓 So, which undergrad branch should you pick?</h2>
+    <p>Here's the honest truth: <span class="highlight">there's no single "AI branch" in most colleges.</span> But several paths lead there. Here's how they stack up:</p>
+    
+    <div class="branch-grid">
+      <div class="branch-card recommended">
+        <div class="badge">⭐ Top pick</div>
+        <h3>Computer Science / CSE</h3>
+        <ul>
+          <li>Strongest foundation for AI/ML</li>
+          <li>Programming, algorithms, data structures</li>
+          <li>Most flexibility post-grad</li>
+          <li>Hiring loves CS grads</li>
+        </ul>
+      </div>
+      <div class="branch-card">
+        <h3>AI & ML (Specialized)</h3>
+        <ul>
+          <li>Newer branch, focused curriculum</li>
+          <li>Less general CS depth</li>
+          <li>Good if you're 100% sure about AI</li>
+          <li>Check the course quality first</li>
+        </ul>
+      </div>
+      <div class="branch-card">
+        <h3>Data Science</h3>
+        <ul>
+          <li>Stats + programming + ML</li>
+          <li>Great for business/analytics roles</li>
+          <li>Less hardcore engineering</li>
+          <li>Huge industry demand</li>
+        </ul>
+      </div>
+      <div class="branch-card">
+        <h3>Mathematics / Statistics</h3>
+        <ul>
+          <li>Killer foundation for advanced ML</li>
+          <li>Best if you LOVE math</li>
+          <li>Need to self-teach coding</li>
+          <li>Common path for ML researchers</li>
+        </ul>
+      </div>
+      <div class="branch-card">
+        <h3>Electronics & Communication</h3>
+        <ul>
+          <li>Strong for AI hardware, robotics</li>
+          <li>Signal processing → AI overlap</li>
+          <li>Less direct than CS</li>
+          <li>Pivot possible with effort</li>
+        </ul>
+      </div>
+      <div class="branch-card">
+        <h3>Information Tech (IT)</h3>
+        <ul>
+          <li>Similar to CS, slightly more applied</li>
+          <li>Good ML opportunities</li>
+          <li>Often interchangeable with CS</li>
+          <li>Solid backup choice</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="analogy-box">
+      My honest take: Pick <strong>CSE</strong> or <strong>CS</strong>. You can always specialize in AI later — but a strong CS foundation opens every door. Specialized AI branches can box you in if you change your mind at 20.
+    </div>
+  </div>
+
+  <!-- Section 6: Career paths -->
+  <div class="section">
+    <h2>💼 What can you actually become?</h2>
+    <p>AI is one of the highest-paying fields right now, and it's growing fast. Here are real roles you could land:</p>
+    
+    <div class="career-timeline">
+      <div class="timeline-item">
+        <h3>ML Engineer</h3>
+        <p>Builds and deploys ML models in real products. Codes a lot. High demand, high pay.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Data Scientist</h3>
+        <p>Finds insights in data, builds prediction models. More analysis, less engineering.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>AI Research Scientist</h3>
+        <p>Invents new AI techniques. Usually needs a PhD. Works at OpenAI, Google DeepMind, etc.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>AI Product Manager</h3>
+        <p>Decides what AI products to build. Mix of tech + business + design.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: Skills -->
+  <div class="section">
+    <h2>🛠️ What you'll need to learn</h2>
+    <p>Don't stress — you don't need to know this <em>before</em> college. But here's what's coming:</p>
+    <p>📌 <span class="term">Python</span> — the language of AI. Easy to learn, used everywhere.</p>
+    <p>📌 <span class="term">Math</span> — linear algebra, calculus, probability. The brain behind ML.</p>
+    <p>📌 <span class="term">Statistics</span> — how to make sense of data and uncertainty.</p>
+    <p>📌 <span class="term">Curiosity</span> — the biggest one. AI moves so fast that being curious matters more than what you already know.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>You've got this 💪</h2>
+    <p style="font-size: 1.1rem; color: #d0d0e8; max-width: 600px; margin: 0 auto;">AI isn't just for "tech geniuses." It's for anyone curious enough to ask <em>"how does this work?"</em> and stubborn enough to figure it out. If that's you — welcome to the future.</p>
+  </div>
+</div>
+
+<script>
+  // Generate particles
+  const particlesContainer = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 20 + 's';
+    p.style.animationDuration = (15 + Math.random() * 15) + 's';
+    const colors = ['#ff6b9d', '#ffc1d3', '#c44569'];
+    p.style.background = colors[Math.floor(Math.random() * 3)];
+    p.style.boxShadow = `0 0 10px ${p.style.background}`;
+    particlesContainer.appendChild(p);
+  }
+
+  // Scroll-triggered animation
+  const sections = document.querySelectorAll('.section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  sections.forEach(s => observer.observe(s));
+
+  // Interactive demo
+  const buttons = document.querySelectorAll('.feature-btn');
+  const prediction = document.getElementById('prediction');
+  let selected = new Set();
+  
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.feature;
+      if (selected.has(f)) {
+        selected.delete(f);
+        btn.classList.remove('active');
+      } else {
+        selected.add(f);
+        btn.classList.add('active');
+      }
+      
+      if (selected.size === 0) {
+        prediction.textContent = 'Pick some traits above! 👆';
+        return;
+      }
+      
+      let catScore = 0, dogScore = 0;
+      if (selected.has('meow')) catScore += 2;
+      if (selected.has('purr')) catScore += 2;
+      if (selected.has('bark')) dogScore += 2;
+      if (selected.has('fetch')) dogScore += 2;
+      
+      if (catScore > dogScore) prediction.textContent = '🐱 The AI thinks: CAT!';
+      else if (dogScore > catScore) prediction.textContent = '🐕 The AI thinks: DOG!';
+      else prediction.textContent = '🤔 The AI is confused... mixed signals!';
+    });
+  });
+
+  // Draw neural network connections
+  setTimeout(() => {
+    const svg = document.getElementById('networkSvg');
+    const network = document.querySelector('.neural-network');
+    const rect = network.getBoundingClientRect();
+    const layers = network.querySelectorAll('.layer');
+    svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
+    
+    const positions = [];
+    layers.forEach(layer => {
+      const neurons = layer.querySelectorAll('.neuron');
+      const layerPos = [];
+      neurons.forEach(n => {
+        const nr = n.getBoundingClientRect();
+        layerPos.push({
+          x: nr.left - rect.left + nr.width/2,
+          y: nr.top - rect.top + nr.height/2
+        });
+      });
+      positions.push(layerPos);
+    });
+    
+    for (let i = 0; i < positions.length - 1; i++) {
+      positions[i].forEach(p1 => {
+        positions[i+1].forEach(p2 => {
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', p1.x);
+          line.setAttribute('y1', p1.y);
+          line.setAttribute('x2', p2.x);
+          line.setAttribute('y2', p2.y);
+          line.setAttribute('class', 'connection');
+          line.style.animationDelay = Math.random() * 3 + 's';
+          svg.appendChild(line);
+        });
+      });
+    }
+  }, 500);
+</script>
+</body>
+</html>
